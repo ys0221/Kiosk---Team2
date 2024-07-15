@@ -1,22 +1,33 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Order {
-    private List<Product> orderList = new ArrayList<>();
-    private int count;
+    public List<Product> orderList = new ArrayList<>();
+    private List<String> requests = new ArrayList<>();
+    private List<Product> waitList = new ArrayList<>();
     private double totalPrice;
+    private int count;
+    private int num_customer = 1;
 
     public Order() {
         count = 0;
         totalPrice = 0;
     }
 
-    public List<Product> getOrderList() {
-        return orderList;
+    public int getCount() {
+        count++;
+        return count;
+    }
+    /*
+    public List<Product> getWaitList() {
+        return waitList;
     }
 
-    public int getCount() {
-        return count;
+     */
+
+    public List<Product> getOrderList() {
+        return orderList;
     }
 
     public double getTotalPrice() {
@@ -36,4 +47,27 @@ public class Order {
         System.out.println("1. 주문    2. 메뉴판");
     }
 
+    public void selectOrder(int num) {
+        if (num == 1) {
+            Scanner scanner = new Scanner(System.in);
+            requests.add(scanner.next());
+            System.out.println("주문이 완료되었습니다!");
+            System.out.println("대기번호는 [ " + num_customer + " ] 번 입니다.");
+            num_customer++;
+        } else if (num == 2) {
+            // 메뉴판으로 돌아간다
+        } else {
+            System.out.println("Invalid order");
+            // 메뉴판으로 돌아간다.
+        }
+    }
+
+    public List<String> getRequests() {
+        return requests;
+    }
+
+    public int getNum_customer() {
+        return num_customer;
+    }
 }
+

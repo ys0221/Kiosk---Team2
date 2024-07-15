@@ -3,11 +3,16 @@ public class Product {
     private String name;
     private String description;
     private double price;
+    private int count = 0;
 
     public Product(String name, String description, double price) {
         this.name = name;
         this.description = description;
         this.price = price;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public String getName() {
@@ -25,4 +30,5 @@ public class Product {
     public void print() {
         System.out.println(getName() + "\t\t| W " + getPrice() + " | " + getDescription());
     }
+
 }
