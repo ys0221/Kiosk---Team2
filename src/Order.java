@@ -3,12 +3,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Order {
-    public List<Product> orderList = new ArrayList<>();
+    private List<Product> orderList = new ArrayList<>();
     private List<String> requests = new ArrayList<>();
     private List<Product> waitList = new ArrayList<>();
-    private double totalPrice;
+    private double totalPrice = 0;
     private int count;
     private int num_customer = 1;
+
 
     public Order() {
         count = 0;
@@ -19,12 +20,10 @@ public class Order {
         count++;
         return count;
     }
-    /*
+
     public List<Product> getWaitList() {
         return waitList;
     }
-
-     */
 
     public List<Product> getOrderList() {
         return orderList;
@@ -47,10 +46,19 @@ public class Order {
         System.out.println("1. 주문    2. 메뉴판");
     }
 
+    public void addRequest(String request) {
+        this.requests.add(request);
+    }
+
+    public List<String> getRequests() {
+        return this.requests;
+    }
+
     public void selectOrder(int num) {
         if (num == 1) {
             Scanner scanner = new Scanner(System.in);
-            requests.add(scanner.next());
+            String request = scanner.nextLine();
+            requests.add(request);
             System.out.println("주문이 완료되었습니다!");
             System.out.println("대기번호는 [ " + num_customer + " ] 번 입니다.");
             num_customer++;
@@ -62,11 +70,14 @@ public class Order {
         }
     }
 
+    /*
     public List<String> getRequests() {
         return requests;
     }
 
-    public int getNum_customer() {
+     */
+
+    public int waitingNumber() {
         return num_customer;
     }
 }
