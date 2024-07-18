@@ -7,13 +7,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ArrayList<Menu> menu = new ArrayList<>();
-        ArrayList<Product> order_List = new ArrayList<>();
-        List<String> requirements = new ArrayList<>();
-        List<Double> total_order_price = new ArrayList<>();
-        ArrayList<String> order_requests = new ArrayList<>();
+        ArrayList<Product> orderList = new ArrayList<>();
+        List<String> requirements;
+        List<Double> totalOrderPrice = new ArrayList<>();
+        ArrayList<String> orderRequests = new ArrayList<>();
         Order order = new Order();
 
-        Manage manage = new Manage(total_order_price, order_requests, order_List);
+        Manage manage = new Manage(totalOrderPrice, orderRequests, orderList);
 
         List<Product> pastaList = new ArrayList<>();
         pastaList.add(new Product("오일 파스타", "올리브유에 마늘의 풍부한 향을 더한 파스타", 6.9));
@@ -122,14 +122,14 @@ public class Main {
                     Scanner select = new Scanner(System.in);
                     order.selectOrder(select.nextInt());
                     // 주문 목록 저장
-                    order_List.addAll(order.getOrderList());
+                    orderList.addAll(order.getOrderList());
                     // 총 가격 저장
-                    total_order_price.add(order.getTotalPrice());
+                    totalOrderPrice.add(order.getTotalPrice());
                     // 요청 사항 저장
                     requirements = order.getRequests();
-                    order_requests.addAll(requirements);
+                    orderRequests.addAll(requirements);
 
-                    manage.update(total_order_price, order_requests, order_List);
+                    manage.update(totalOrderPrice, orderRequests, orderList);
                     break;
                 case "cancel":
                     // 주문 취소 창 출력

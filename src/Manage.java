@@ -7,16 +7,16 @@ import java.util.Scanner;
 public class Manage extends Order {
     private List<String> requests = new ArrayList<>();
     private List<Product> waitList = new ArrayList<>();
-    private List<Double> total_price = new ArrayList<>();
+    private List<Double> totalPrice = new ArrayList<>();
     // 주문 목록 정보 받기
-    public Manage(List<Double> price, List<String> list1, List<Product> list2) {
-        this.total_price = price;
-        this.requests = list1;
-        this.waitList = list2;
+    public Manage(List<Double> price, List<String> requests, List<Product> waitList) {
+        this.totalPrice = price;
+        this.requests = requests;
+        this.waitList = waitList;
     }
 
     public void update(List<Double> total_order_price, List<String> order_requests, List<Product> order_List) {
-        this.total_price = total_order_price;
+        this.totalPrice = total_order_price;
         this.requests = order_requests;
         this.waitList = order_List;
     }
@@ -37,7 +37,7 @@ public class Manage extends Order {
 
     // 상품 총 가격 출력
     public void printTotalPrice () {
-        System.out.println("총 가격 : W " + total_price);
+        System.out.println("총 가격 : W " + totalPrice);
     }
 
     // 요청 사항 출력
