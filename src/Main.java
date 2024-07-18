@@ -7,13 +7,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ArrayList<Menu> menu = new ArrayList<>();
-        ArrayList<Product> orderList = new ArrayList<>();
+        List<List<Product>> orderList = new ArrayList<>();
         List<String> requirements;
         List<Double> totalOrderPrice = new ArrayList<>();
         ArrayList<String> orderRequests = new ArrayList<>();
+        int numCustomer = 1;
         Order order = new Order();
-
-        Manage manage = new Manage(totalOrderPrice, orderRequests, orderList);
+        ArrayList<Manage> manageList = new ArrayList<>();
 
         List<Product> pastaList = new ArrayList<>();
         pastaList.add(new Product("오일 파스타", "올리브유에 마늘의 풍부한 향을 더한 파스타", 6.9));
@@ -42,24 +42,32 @@ public class Main {
         drinkList.add(new Product("에이드", "수제 과일청으로 만든 여름철 별미", 3.0));
         menu.add(new Menu("Drink", "목 마를 때 마실 수 있는 시원한 음료", drinkList));
 
+        // 메뉴판에서 가시성 있게 수정 -> 메뉴판에서 6번 7번 삭제
         menu.add(new Menu("Order", "장바구니를 확인 후 주문합니다."));
         menu.add(new Menu("Cancel", "진행 중인 주문을 취소합니다."));
 
         while (true) {
-            if (order.waitingNumber() > 1) {
+            if (numCustomer > 1) {
                 System.out.println("[ 대기 목록 ]");
-                // 대기 목록 출력
-                manage.printNumber(); // 대기 번호
-                manage.printOrder(); // 주문 상품 목록
-                manage.printTotalPrice(); // 상품 총 가격
-                manage.printRequests(); // 요청 사항
-                manage.printTime(); // 주문 일시
+                // 대기 목록 출력 -> 인덱스 포함
+                for (int i = 0; i < manageList.size(); i++) {
+                    manageList.get(i).printNumber(numCustomer-2); // 대기 번호
+                    manageList.get(i).printOrder(numCustomer-2); // 주문 상품 목록
+                    manageList.get(i).printTotalPrice(numCustomer-2); // 상품 총 가격
+                    manageList.get(i).printRequests(numCustomer-2); // 요청 사항
+                    manageList.get(i).printTime(); // 주문 일시
+                    System.out.println("-------------------------------------");
+                }
             }
 
 
             System.out.println("===== 메인 메뉴판 =====");
-            for (int i = 0; i < menu.size(); i++) {
+            System.out.println("주문하실거면 order 를, 주문을 취소하실거면 cancel 을 입력해주세요");
+            for (int i = 0; i < menu.size()-2; i++) {
                 System.out.println(i + 1 + "." + menu.get(i).getTitle() + " | " + menu.get(i).getDescription());
+            }
+            for (int j = menu.size()-2 ; j < menu.size(); j++) {
+                System.out.println(menu.get(j).getTitle() + " | " + menu.get(j).getDescription());
             }
 
             System.out.print("원하는 항목을 선택하세요: ");
@@ -121,15 +129,13 @@ public class Main {
                     order.print();
                     Scanner select = new Scanner(System.in);
                     order.selectOrder(select.nextInt());
+                    // 대기 번호 저장
+                    numCustomer = order.getNumber();
                     // 주문 목록 저장
-                    orderList.addAll(order.getOrderList());
-                    // 총 가격 저장
-                    totalOrderPrice.add(order.getTotalPrice());
-                    // 요청 사항 저장
-                    requirements = order.getRequests();
-                    orderRequests.addAll(requirements);
-
-                    manage.update(totalOrderPrice, orderRequests, orderList);
+                    Manage manage = new Manage(order.getTotalPrice(), order.getRequests(), order.getOrderList());
+                    manageList.add(manage);
+                    // order 초기화
+                    order = new Order();
                     break;
                 case "cancel":
                     // 주문 취소 창 출력
