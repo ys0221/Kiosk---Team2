@@ -5,10 +5,9 @@ import java.util.Scanner;
 public class Order {
     private List<Product> orderList = new ArrayList<>();
     private List<String> requests = new ArrayList<>();
-    private List<Product> waitList = new ArrayList<>();
     private double totalPrice = 0;
     private int count;
-    private int num_customer = 1;
+    private static int num_customer = 1; // 모든 인스턴스가 공유할 수 있도록 해줘야함
 
 
     public Order() {
@@ -19,10 +18,6 @@ public class Order {
     public int getCount() {
         count++;
         return count;
-    }
-
-    public List<Product> getWaitList() {
-        return waitList;
     }
 
     public List<Product> getOrderList() {
@@ -54,6 +49,9 @@ public class Order {
         return this.requests;
     }
 
+    public void plusNumber() {
+        num_customer++;
+    }
     public void selectOrder(int num) {
         if (num == 1) {
             Scanner scanner = new Scanner(System.in);
@@ -68,17 +66,6 @@ public class Order {
             System.out.println("Invalid order");
             // 메뉴판으로 돌아간다.
         }
-    }
-
-    /*
-    public List<String> getRequests() {
-        return requests;
-    }
-
-     */
-
-    public int waitingNumber() {
-        return num_customer;
     }
 }
 

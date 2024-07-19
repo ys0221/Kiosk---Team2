@@ -1,36 +1,30 @@
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
-import java.util.Scanner;
 
-public class Manage extends Order {
-    private List<String> requests = new ArrayList<>();
-    private List<Product> waitList = new ArrayList<>();
-    private List<Double> totalPrice = new ArrayList<>();
+public class Manage {
+    private List<String> requests;
+    private List<Product> orderList;
+    private double totalPrice = 0.0;
+    private int numCustomers = 0;
+
     // 주문 목록 정보 받기
-    public Manage(List<Double> price, List<String> requests, List<Product> waitList) {
+    public Manage(double price, List<String> requests, List<Product> waitList, int numCustomer) {
         this.totalPrice = price;
         this.requests = requests;
-        this.waitList = waitList;
-    }
-
-    public void update(List<Double> total_order_price, List<String> order_requests, List<Product> order_List) {
-        this.totalPrice = total_order_price;
-        this.requests = order_requests;
-        this.waitList = order_List;
+        this.orderList = waitList;
+        this.numCustomers = numCustomer;
     }
 
     // 대기 번호 출력
     public void printNumber() {
-        int number = waitingNumber();
-        System.out.println("대기번호 : " + number);
+        System.out.println("대기번호 : " + numCustomers);
     }
 
     // 주문 상품 목록 출력
     public void printOrder () {
         System.out.println("<주문 상품>");
-        for (Product product : waitList) {
+        for (Product product : orderList) {
             product.print();
         }
     }
@@ -41,16 +35,6 @@ public class Manage extends Order {
     }
 
     // 요청 사항 출력
-    /*
-    public void printRequests() {
-        System.out.println("요청 사항:");
-        List<String> lists = new ArrayList<>(requests); // requests 리스트를 복사하여 새로운 ArrayList 생성
-        String join = String.join(", ", lists);
-        System.out.println(join);
-    }
-
-     */
-
     public void printRequests () {
         System.out.println("요청 사항");
         for (String request : requests) {
@@ -62,6 +46,12 @@ public class Manage extends Order {
     public void printTime () {
         LocalDateTime now = LocalDateTime.now();
         System.out.println("주문 시간 : " + now);
+    }
+
+    // 주문 완료 시간 출력
+    public void printCompleteTime() {
+        LocalDateTime complete = LocalDateTime.now();
+        System.out.println("완료 시간 : " + complete);
     }
 }
 

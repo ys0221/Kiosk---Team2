@@ -11,8 +11,8 @@ public class Main {
         List<String> requirements;
         List<Double> totalOrderPrice = new ArrayList<>();
         ArrayList<String> orderRequests = new ArrayList<>();
-        int numCustomer = 1;
         Order order = new Order();
+        int numCustomer = 1;
         ArrayList<Manage> manageList = new ArrayList<>();
 
         List<Product> pastaList = new ArrayList<>();
@@ -48,13 +48,28 @@ public class Main {
 
         while (true) {
             if (numCustomer > 1) {
-                System.out.println("[ 대기 목록 ]");
+                // 완료 목록 출력
+                /*
+                System.out.println("[ 완료된 주문 ]");
+                for (int i = 0; i < manageList.size(); i++) {
+                    manageList.get(i).printNumber(); // 대기 번호
+                    manageList.get(i).printOrder(); // 주문 상품 목록
+                    manageList.get(i).printTotalPrice(); // 상품 총 가격
+                    manageList.get(i).printRequests(); // 요청 사항
+                    manageList.get(i).printTime(); // 주문 일시
+                    manageList.get(i).printCompleteTime(); // 완료 일시
+                    System.out.println("-------------------------------------");
+                }
+
+                 */
+                // 대기 목록 출력
+                System.out.println("[ 대기 주문 ]");
                 // 대기 목록 출력 -> 인덱스 포함
                 for (int i = 0; i < manageList.size(); i++) {
-                    manageList.get(i).printNumber(numCustomer-2); // 대기 번호
-                    manageList.get(i).printOrder(numCustomer-2); // 주문 상품 목록
-                    manageList.get(i).printTotalPrice(numCustomer-2); // 상품 총 가격
-                    manageList.get(i).printRequests(numCustomer-2); // 요청 사항
+                    manageList.get(i).printNumber(); // 대기 번호
+                    manageList.get(i).printOrder(); // 주문 상품 목록
+                    manageList.get(i).printTotalPrice(); // 상품 총 가격
+                    manageList.get(i).printRequests(); // 요청 사항
                     manageList.get(i).printTime(); // 주문 일시
                     System.out.println("-------------------------------------");
                 }
@@ -129,12 +144,11 @@ public class Main {
                     order.print();
                     Scanner select = new Scanner(System.in);
                     order.selectOrder(select.nextInt());
-                    // 대기 번호 저장
-                    numCustomer = order.getNumber();
                     // 주문 목록 저장
-                    Manage manage = new Manage(order.getTotalPrice(), order.getRequests(), order.getOrderList());
+                    Manage manage = new Manage(order.getTotalPrice(), order.getRequests(), order.getOrderList(), numCustomer);
                     manageList.add(manage);
-                    // order 초기화
+                    numCustomer++;
+                    // order 초기화-> order 초기화 해주는 이유 찾기
                     order = new Order();
                     break;
                 case "cancel":
