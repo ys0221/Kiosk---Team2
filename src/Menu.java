@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Menu {
     private String title;
     private String description;
+    private int count = 0;
 
     private List<Product> products = new ArrayList<>();
 
@@ -44,8 +45,10 @@ public class Menu {
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인    2. 취소");
 
-        if(scan.nextInt() == 1){
+        if(scan.nextInt() == 1) {
             order.getOrderList().add(product);
         }
     }
+
+
 }
