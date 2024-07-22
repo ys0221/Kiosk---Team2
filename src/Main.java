@@ -3,17 +3,17 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.StreamSupport;
 
 public class Main {
     public static void main(String[] args) {
         ArrayList<Menu> menu = new ArrayList<>();
-        List<List<Product>> orderList = new ArrayList<>();
-        List<String> requirements;
         List<Double> totalOrderPrice = new ArrayList<>();
-        ArrayList<String> orderRequests = new ArrayList<>();
+        List<Integer> customerNumber = new ArrayList<>();
         Order order = new Order();
         int numCustomer = 1;
         ArrayList<Manage> manageList = new ArrayList<>();
+        ArrayList<Manage> completeList = new ArrayList<>();
 
         List<Product> pastaList = new ArrayList<>();
         pastaList.add(new Product("오일 파스타", "올리브유에 마늘의 풍부한 향을 더한 파스타", 6.9));
@@ -49,19 +49,16 @@ public class Main {
         while (true) {
             if (numCustomer > 1) {
                 // 완료 목록 출력
-                /*
                 System.out.println("[ 완료된 주문 ]");
-                for (int i = 0; i < manageList.size(); i++) {
-                    manageList.get(i).printNumber(); // 대기 번호
-                    manageList.get(i).printOrder(); // 주문 상품 목록
-                    manageList.get(i).printTotalPrice(); // 상품 총 가격
-                    manageList.get(i).printRequests(); // 요청 사항
-                    manageList.get(i).printTime(); // 주문 일시
-                    manageList.get(i).printCompleteTime(); // 완료 일시
+                for (int i = 0; i < completeList.size(); i++) {
+                    completeList.get(i).printNumber(); // 대기 번호
+                    completeList.get(i).printOrder(); // 주문 상품 목록
+                    completeList.get(i).printTotalPrice(); // 상품 총 가격
+                    completeList.get(i).printRequests(); // 요청 사항
+                    completeList.get(i).printTime(); // 주문 일시
+                    completeList.get(i).printCompleteTime(); // 완료 일시
                     System.out.println("-------------------------------------");
                 }
-
-                 */
                 // 대기 목록 출력
                 System.out.println("[ 대기 주문 ]");
                 // 대기 목록 출력 -> 인덱스 포함
@@ -75,9 +72,8 @@ public class Main {
                 }
             }
 
-
             System.out.println("===== 메인 메뉴판 =====");
-            System.out.println("주문하실거면 order 를, 주문을 취소하실거면 cancel 을 입력해주세요");
+            System.out.println("주문하실거면 16을, 취소하실거면 17을 입력해주세요");
             for (int i = 0; i < menu.size()-2; i++) {
                 System.out.println(i + 1 + "." + menu.get(i).getTitle() + " | " + menu.get(i).getDescription());
             }
@@ -87,75 +83,47 @@ public class Main {
 
             System.out.print("원하는 항목을 선택하세요: ");
             Scanner scanner = new Scanner(System.in);
-            String choice = scanner.nextLine();
-
-            switch (choice) {
-                case "1":
-                    menu.get(0).print();
-                    menu.get(0).addOrder(order, scanner);
-                    break;
-                case "2":
-                    menu.get(1).print();
-                    menu.get(1).addOrder(order, scanner);
-                    break;
-                case "3":
-                    menu.get(2).print();
-                    menu.get(2).addOrder(order, scanner);
-                    break;
-                case "4":
-                    menu.get(3).print();
-                    menu.get(3).addOrder(order, scanner);
-                    break;
-                case "5":
-                    menu.get(4).print();
-                    menu.get(4).addOrder(order, scanner);
-                    break;
-                case "6":
-                    // 상품 추가
-                    break;
-                case "7":
-                    //
-                    break;
-                case "8":
-                    //
-                    break;
-                case "9":
-                    //
-                    break;
-                case "10":
-                    //
-                    break;
-                case "11":
-                    //
-                    break;
-                case "12":
-                    //
-                    break;
-                case "13":
-                    //
-                    break;
-                case "14":
-                    //
-                    break;
-                case "15":
-                    //
-                    break;
-                case "order":
-                    order.print();
-                    Scanner select = new Scanner(System.in);
-                    order.selectOrder(select.nextInt());
-                    // 주문 목록 저장
-                    Manage manage = new Manage(order.getTotalPrice(), order.getRequests(), order.getOrderList(), numCustomer);
-                    manageList.add(manage);
-                    numCustomer++;
-                    // order 초기화-> order 초기화 해주는 이유 찾기
-                    order = new Order();
-                    break;
-                case "cancel":
-                    // 주문 취소 창 출력
-                    break;
-                default:
-                    System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
+            int choice = scanner.nextInt();
+            if (choice == 1) {
+                 menu.get(0).print();
+                 menu.get(0).addOrder(order, scanner);
+            } else if (choice == 2) {
+                 menu.get(1).print();
+                 menu.get(1).addOrder(order, scanner);
+            } else if (choice == 3) {
+                 menu.get(2).print();
+                 menu.get(2).addOrder(order, scanner);
+            } else if (choice == 4) {
+                 menu.get(3).print();
+                 menu.get(3).addOrder(order, scanner);
+            } else if (choice == 5) {
+                 menu.get(4).print();
+                 menu.get(4).addOrder(order, scanner);
+            } else if (choice == 16) {
+                 order.print();
+                 Scanner select = new Scanner(System.in);
+                 order.selectOrder(select.nextInt());
+                 totalOrderPrice.add(order.getTotalPrice());
+                 customerNumber.add(numCustomer);
+                 // 주문 목록 저장
+                 Manage manage = new Manage(totalOrderPrice.get(numCustomer-1), order.getRequests(), order.getOrderList(), customerNumber.get(numCustomer-1));
+                 manageList.add(manage);
+                 numCustomer++;
+                 // order 초기화 -> order 초기화 해주는 이유 찾기
+                 order = new Order();
+                 // 대기 상태 변경
+                 Scanner scan = new Scanner(System.in);
+                 System.out.println("주문 상태를 변경하시려면 0번을 입력해주세요");
+                 if (scan.nextInt() == 0) {
+                     for (int i = 0; i <= manageList.size(); i++) {
+                         manage.changeOrderStatus(manageList, i, completeList);
+                     }
+                 }
+                 manage.printCompleteOrder(completeList);
+            } else if (choice == 17) {
+                 // 취소 창
+            } else {
+                 System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
             }
         }
     }
