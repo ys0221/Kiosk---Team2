@@ -67,5 +67,10 @@ public class Order {
             // 메뉴판으로 돌아간다.
         }
     }
+
+    public void cancelOrder(){
+        orderList.clear();
+        totalPrice = 0;
+    }
 }
 
