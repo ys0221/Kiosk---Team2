@@ -1,3 +1,4 @@
+// 2024.07.23 최종
 public class Product {
 
     private String name;
