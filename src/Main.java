@@ -115,7 +115,7 @@ public class Main {
                  Scanner scan = new Scanner(System.in);
                  System.out.println("주문 상태를 변경하시려면 0번을 입력해주세요");
                  if (scan.nextInt() == 0) {
-                     for (int i = 0; i <= manageList.size(); i++) {
+                     for (int i = manageList.size()-1; i >=0; i--) {
                          manage.changeOrderStatus(manageList, i, completeList);
                      }
                  }

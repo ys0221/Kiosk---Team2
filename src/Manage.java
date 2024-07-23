@@ -68,14 +68,23 @@ public class Manage {
             // nothing
         } else {
             System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
-            next = scanner.nextInt();
+            changeOrderStatus(List, i, completeLists);
         }
     }
 
     // 완료된 최근 주문 3개를 출력한다
     public void printCompleteOrder(ArrayList<Manage> completeLists) {
         if (completeLists.size() > 3) {
-            completeLists.remove(completeLists.size()-3);
+            if (completeLists.size() % 3 == 0) { // 배열의 사이즈가 3의 배수인 경우
+                int n = (completeLists.size() / 3) - 2;
+                for (int i = (3 * n) + 2; i >= 0; i--) {
+                    completeLists.remove(i);
+                }
+            } else {
+                for (int i = completeLists.size() % 3 - 1; i >= 0; i--) {
+                    completeLists.remove(i);
+                }
+            }
         } else {
             // nothing
         }
