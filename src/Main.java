@@ -15,6 +15,8 @@ public class Main {
         int numCustomer = 1;
         ArrayList<Manage> manageList = new ArrayList<>();
 
+        Scanner scan = new Scanner(System.in);
+
         List<Product> pastaList = new ArrayList<>();
         pastaList.add(new Product("오일 파스타", "올리브유에 마늘의 풍부한 향을 더한 파스타", 6.9));
         pastaList.add(new Product("토마토 파스타", "치즈를 듬뿍 갈아 올린 베이직 토마토 파스타", 7.9));
@@ -86,29 +88,28 @@ public class Main {
             }
 
             System.out.print("원하는 항목을 선택하세요: ");
-            Scanner scanner = new Scanner(System.in);
-            String choice = scanner.nextLine();
+            String choice = scan.nextLine();
 
             switch (choice) {
                 case "1":
                     menu.get(0).print();
-                    menu.get(0).addOrder(order, scanner);
+                    menu.get(0).addOrder(order, scan);
                     break;
                 case "2":
                     menu.get(1).print();
-                    menu.get(1).addOrder(order, scanner);
+                    menu.get(1).addOrder(order, scan);
                     break;
                 case "3":
                     menu.get(2).print();
-                    menu.get(2).addOrder(order, scanner);
+                    menu.get(2).addOrder(order, scan);
                     break;
                 case "4":
                     menu.get(3).print();
-                    menu.get(3).addOrder(order, scanner);
+                    menu.get(3).addOrder(order, scan);
                     break;
                 case "5":
                     menu.get(4).print();
-                    menu.get(4).addOrder(order, scanner);
+                    menu.get(4).addOrder(order, scan);
                     break;
                 case "6":
                     // 상품 추가
@@ -142,8 +143,7 @@ public class Main {
                     break;
                 case "order":
                     order.print();
-                    Scanner select = new Scanner(System.in);
-                    order.selectOrder(select.nextInt());
+                    order.selectOrder(scan.nextInt());
                     // 주문 목록 저장
                     Manage manage = new Manage(order.getTotalPrice(), order.getRequests(), order.getOrderList(), numCustomer);
                     manageList.add(manage);
@@ -153,6 +153,17 @@ public class Main {
                     break;
                 case "cancel":
                     // 주문 취소 창 출력
+                    System.out.println("진행하던 주문을 취소하시겠습니까?");
+                    System.out.println("1. 확인           2. 취소");
+                    int cancel = scan.nextInt();
+                    while (cancel != 1 && cancel != 2) {
+                        System.out.println("잘못 선택하셨습니다. 다시 선택해주세요.");
+                        cancel = scan.nextInt();
+                    }
+                    if (cancel == 1) {
+                        order.cancelOrder();
+                        System.out.println("진행하던 주문이 취소되었습니다.");
+                    }
                     break;
                 default:
                     System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
