@@ -6,6 +6,68 @@ import java.util.Scanner;
 import java.util.stream.StreamSupport;
 
 public class Main {
+    private static void adminMode(ArrayList<Category> categories, ManageProgram manageProgram, Scanner scan) {
+        while (true) {
+            System.out.println("===== 관리자 모드 =====");
+            System.out.println("1. 카테고리 추가");
+            System.out.println("2. 카테고리 삭제");
+            System.out.println("3. 상품 추가");
+            System.out.println("4. 상품 삭제");
+            System.out.println("5. 메뉴판으로 돌아가기");
+            System.out.print("원하는 항목을 선택하세요: ");
+            int adminChoice = scan.nextInt();
+
+            switch (adminChoice) {
+                case 1:
+                    System.out.print("추가할 카테고리 이름을 입력하세요: ");
+                    scan.nextLine(); // Consume the newline
+                    String categoryName = scan.nextLine();
+                    manageProgram.addCategory(categoryName);
+                    // 메뉴를 다시 출력
+                    printMenu(categories);
+                    break;
+                case 2:
+                    System.out.print("삭제할 카테고리 번호를 입력하세요: ");
+                    int categoryNumberToDelete = scan.nextInt();
+                    manageProgram.deleteCategory(categoryNumberToDelete);
+                    // 메뉴를 다시 출력
+                    printMenu(categories);
+                    break;
+                case 3:
+                    System.out.print("상품을 추가할 카테고리 번호를 입력하세요: ");
+                    int categoryNumber = scan.nextInt();
+                    System.out.print("상품 이름을 입력하세요: ");
+                    scan.nextLine(); // Consume the newline
+                    String productName = scan.nextLine();
+                    System.out.print("상품 설명을 입력하세요: ");
+                    String productDescription = scan.nextLine();
+                    System.out.print("상품 가격을 입력하세요: ");
+                    double productPrice = scan.nextDouble();
+                    manageProgram.addProduct(productName, productDescription, productPrice, categoryNumber);
+                    // 메뉴를 다시 출력
+                    printMenu(categories);
+                    break;
+                case 4:
+                    System.out.print("상품을 삭제할 카테고리 번호를 입력하세요: ");
+                    categoryNumberToDelete = scan.nextInt();
+                    System.out.print("상품 번호를 입력하세요: ");
+                    int productNumberToDelete = scan.nextInt();
+                    manageProgram.deleteProduct(categoryNumberToDelete, productNumberToDelete);
+                    // 메뉴를 다시 출력
+                    printMenu(categories);
+                    break;
+                case 5:
+                    return; // 메뉴판으로 돌아가기
+                default:
+                    System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
+            }
+        }
+    }
+    private static void printMenu(ArrayList<Category> categories) {
+        for (Category category : categories) {
+            category.print(); // 카테고리와 상품을 출력
+        }
+    }
     public static void main(String[] args) {
         ArrayList<Menu> menu = new ArrayList<>();
         List<Double> totalOrderPrice = new ArrayList<>();
@@ -121,9 +183,24 @@ public class Main {
                  }
                  manage.printCompleteOrder(completeList);
             } else if (choice == 17) {
-                 // 취소 창
-            } else {
-                 System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
+                // 주문 취소 창 출력
+                System.out.println("진행하던 주문을 취소하시겠습니까?");
+                System.out.println("1. 확인           2. 취소");
+                Scanner scan = new Scanner(System.in);
+                int cancel = scan.nextInt();
+                while (cancel != 1 && cancel != 2) {
+                    System.out.println("잘못 선택하셨습니다. 다시 선택해주세요.");
+                    cancel = scan.nextInt();
+                }
+                if (cancel == 1) {
+                    order.cancelOrder();
+                    System.out.println("진행하던 주문이 취소되었습니다.");
+                }
+            } else if (choice == 0) {
+                adminMode(categories, manageProgram, scan);
+                // 메뉴를 다시 출력
+                printMenu(categories);
+                continue; // 다시 메뉴 출력
             }
         }
     }
